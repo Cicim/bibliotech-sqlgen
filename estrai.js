@@ -358,12 +358,28 @@ console.log(ripiani);
 // Ottieni solo gli armadi
 let armadi = ripiani.map(e => /\d/.exec(e)[0]);
 armadi = [...new Set(armadi)];
+// Inserisci gli armadi
+output += '\n\n-- Armadi -----\nINSERT INTO Armadi (idArmadio, Descrizione, idSezione) VALUES\n';
+armadi.forEach((armadio, i) => {
+    output += `\t(${armadio}, "Armadio ${armadio}", 1)`;
+    if (i < armadi.length - 1) output += ',\n';
+    else output += ';';
+});
+console.log("Armadi salvati:", armadi.length);
 
-// Inserisci gli scaffali
-output += '\n\n-- Scaffali -----\nINSERT INTO Scaffali'
+// Inserisci i ripiani
+output += '\n\n-- Ripiani -----\nINSERT INTO Ripiani (idRipiano, NumeroRipiano, idArmadio) VALUES\n';
+ripiani.forEach((ripiano, id) => {
+    const regex = /(\d+)_(\d+)?/.exec(ripiano);
+    ripiano = regex[2] | 0;
+    let armadio = regex[1];
+    
+    output += `\t(${id}, ${ripiano}, ${armadio})`;
+    if (id < ripiani.length - 1) output += ',\n';
+    else output += ';';
+});
+console.log("Ripiani salvati:", ripiani.length);
 
-
-// Inserisci le copie
 
 
 
