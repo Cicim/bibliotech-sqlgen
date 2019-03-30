@@ -168,10 +168,10 @@ collane.forEach((collana, id) => {
 console.log("Collane salvate:", collane.length);
 
 // Inserisci tutte le lingue
-output += "\n\n-- Lingue -----\nINSERT INTO Collane (idLingua, Descrizione, Abbreviazione) VALUES\n";
+output += "\n\n-- Lingue -----\nINSERT INTO Lingue (idLingua, Descrizione, Abbreviazione) VALUES\n";
 lingue.unshift("N/D");
 lingue.forEach((lingua, id) => {
-    output += `\t(${id}, "${lingua.capitalize()}, ${
+    output += `\t(${id}, "${lingua.capitalize()}", "${
         lingua === 'N/D' ? 'ND' : lingua.substr(0, 2).toUpperCase()}")`;
     if (id < lingue.length - 1) output += ',\n';
     else output += ';';
@@ -276,7 +276,14 @@ let ripiani = [];
 
 let libriInseriti = 0;
 for (let i = 1; i < valori.length - 1; i++) {
+    // Elimina i duplicati
     let ISBN = valori[i][0];
+    // Se tra i prossimi valori trovi un libro con lo stesso ISBN, cancellalo
+    for (let j = i + 1; j < valori.length - 1; j++) {
+        if (ISBN.length === 13 && valori[j][0] === ISBN)
+            valori.splice(j, 1);
+    }
+
     let Titolo = valori[i][1];
     let AnnoPubblicazione = valori[i][2];
     let Genere = valori[i][4];
@@ -315,6 +322,8 @@ for (let i = 1; i < valori.length - 1; i++) {
     // Aggiungi il codice alla lista di codici
     codici.push(ISBN);
 
+    // Elimina le "" nel titolo
+    Titolo = Titolo.split("\"").join("");
     // Capitolizza il titolo
     Titolo = Titolo.capitalize();
 
@@ -351,6 +360,9 @@ for (let i = 1; i < valori.length - 1; i++) {
 }
 console.log("Libri salvati:", libriInseriti);
 
+// Cambia l'ultima , in ;
+output = output.replace(/,\n$/, ';');
+
 // Elimina i duplicati nei ripiani
 ripiani = [...new Set(ripiani)];
 console.log(ripiani);
@@ -374,7 +386,7 @@ ripiani.forEach((ripiano, id) => {
     ripiano = regex[2] | 0;
     let armadio = regex[1];
     
-    output += `\t(${id}, ${ripiano}, ${armadio})`;
+    output += `\t(${id + 1}, ${ripiano}, ${armadio})`;
     if (id < ripiani.length - 1) output += ',\n';
     else output += ';';
 });
