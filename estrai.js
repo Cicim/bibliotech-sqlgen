@@ -304,7 +304,7 @@ for (let i = 1; i < valori.length - 1; i++) {
     if (idTipologia < 0) idTipologia = 0;
 
     // Ottieni l'id dell'editore
-    let idEditore = editori.indexOf(Tipologia.toLowerCase());
+    let idEditore = editori.indexOf(Editore.toLowerCase());
     if (idEditore < 0) idEditore = 0;
 
     // Ottieni l'id della collana
