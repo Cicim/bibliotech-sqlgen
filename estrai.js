@@ -9,10 +9,6 @@ const valori = linee.map(e => e.split(";"));
 // Output da scrivere nel file SQL
 let output = "";
 
-
-// Stampa la lista dei dati nella tabella
-console.log(valori[0].join("\n"));
-
 /**
  * Individuazione delle tabelle
  */
@@ -158,13 +154,29 @@ editori.forEach((editore, id) => {
 console.log("Editori salvati:", editori.length);
 
 // Inserisci tutte le collane
+// Rimuovi l'N/D
+collane.splice(collane.indexOf("n/d"), 1);
+// Inserisci l'N/D
+collane.unshift("n/d");
 output += "\n\n-- Collane -----\nINSERT INTO Collane (idCollana, Nome) VALUES\n";
 collane.forEach((collana, id) => {
+    if (collana === 'n/d') collana = 'N/D';
     output += `\t(${id}, "${collana.capitalizeAll()}")`;
     if (id < collane.length - 1) output += ',\n';
     else output += ';';
 });
 console.log("Collane salvate:", collane.length);
+
+// Inserisci tutte le lingue
+output += "\n\n-- Lingue -----\nINSERT INTO Collane (idLingua, Descrizione, Abbreviazione) VALUES\n";
+lingue.unshift("N/D");
+lingue.forEach((lingua, id) => {
+    output += `\t(${id}, "${lingua.capitalize()}, ${
+        lingua === 'N/D' ? 'ND' : lingua.substr(0, 2).toUpperCase()}")`;
+    if (id < lingue.length - 1) output += ',\n';
+    else output += ';';
+});
+console.log("Lingue salvate:", lingue.length);
 
 // Inserisci tutti gli autori
 output += "\n\n-- Autori -----\nINSERT INTO Autori (idAutore, NomeAutore, CognomeAutore, DataNascita, idNazionalita, idCittaNascita) VALUES\n";
@@ -273,11 +285,19 @@ for (let i = 1; i < valori.length - 1; i++) {
     let idEditore = editori.indexOf(Tipologia.toLowerCase());
     if (idEditore < 0) idEditore = 0;
 
+    // Ottieni l'id della collana
+    let idCollana = collane.indexOf(Collana.toLowerCase());
+    if (idCollana < 0) idCollana = 0;
+
+    // Ottieni l'id della lingua
+    let idLingua = lingue.indexOf(Lingua.toLowerCase());
+    if (idLingua < 0) idLingua = 0;
+
 
     // Inserisci la riga
     output += `\t('${ISBN}', "${Titolo}", NULL, ${AnnoPubblicazione}, `;
     output += `'${DataAggiunta}', ${idGenere}, ${idTipologia}, ${idEditore}, `;
-    output += `),\n`;
+    output += `${idCollana}, ${idLingua}),\n`;
 
     libriInseriti++;
 }
