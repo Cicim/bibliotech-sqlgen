@@ -247,6 +247,9 @@ const DataAggiunta = data.getFullYear()
     + '-' + data.getMonth()
     + '-' + data.getDate();
 
+// Tieni conto degli ISBN cambiati
+let codici = [undefined];
+let fillers = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 let libriInseriti = 0;
 for (let i = 1; i < valori.length - 1; i++) {
@@ -263,9 +266,28 @@ for (let i = 1; i < valori.length - 1; i++) {
     let Scaffale = valori[i][12];
     let Ripiano = valori[i][13];
 
-    // Ignora i libri senza ISBN
-    // TODO Sistema l'ISBN
-    if (!ISBN.match(/^\d{13}$/)) continue;
+    // Ottieni il codice, ISBN o meno
+    const codice = ISBN === 'N/D' ? '' : ISBN;
+    if (!ISBN.match(/^\d{13}$/) && ISBN.length < 13) {
+        // Calcola lo spazio da riempire
+        const spazio = 12 - codice.length;
+
+        // Incrementa corretto nell'array dei codici
+        const filler = (fillers[spazio]++).toString();
+
+        // Se lo spazio supera i caratteri consentiti
+        if (fillers[spazio].toString().length > spazio)
+            fillers[spazio] = 0;
+
+        // Scrivi il filler con 0 a riempimento
+        ISBN = filler + codice;
+        while (ISBN.length < 13)
+            ISBN = '0' + ISBN;
+        // Aggiungi una N all'inizio del codice
+        ISBN = 'N' + ISBN;
+    }
+    // Aggiungi il codice alla lista di codici
+    codici.push(ISBN);
 
     // Capitolizza il titolo
     Titolo = Titolo.capitalize();
