@@ -233,6 +233,26 @@ autori.forEach((nomeCompleto, id) => {
 console.log("Autori salvati:", autori.length);
 //#endregion
 
+// Inserisci gli enti
+output += '\n\n-- Enti -----\nINSERT INTO Enti (idEnte, NomeEnte) VALUES\n';
+output += '\t(1, "I.S. Rosselli Aprilia");';
+
+// Inserisci le biblioteche
+output += '\n\n-- Biblioteche -----\nINSERT INTO Biblioteche (idBiblioteca, Email, TelefonoFisso, Principale, ViaPzz, NumeroCivico, Citta, SitoWeb, NomeBiblioteca, EnteAppartenente) VALUES\n';
+output += '\t(1, "ltis004008@istruzione.it", "0692063631", 1, "Via Carroceto", NULL, 173, "http://isrosselliaprilia.gov.it", "Biblioteca Rosselli", 1);';
+
+// Inserisci gli edifici
+output += '\n\n-- Edifici -----\nINSERT INTO Edifici (idEdificio, Descrizione, idBiblioteca) VALUES\n';
+output += '\t(1, "Sede Est", 1);';
+
+// Inserisci i piani
+output += '\n\n-- Piani -----\nINSERT INTO Piani (idPiano, Numero, idEdificio) VALUES\n';
+output += '\t(1, 1, 1);';
+
+// Inserisci una sezione
+output += '\n\n-- Sezioni -----\nINSERT INTO Sezioni (idSezione, Descrizione, idPiano) VALUES\n';
+output += '\t(1, "Libri del Rosselli", 1);'
+
 
 /**
  * Ricava i dati dei libri
@@ -251,6 +271,9 @@ const DataAggiunta = data.getFullYear()
 let codici = [undefined];
 let fillers = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
+// Tieni conto anche di scaffali e ripiani
+let ripiani = [];
+
 let libriInseriti = 0;
 for (let i = 1; i < valori.length - 1; i++) {
     let ISBN = valori[i][0];
@@ -263,8 +286,11 @@ for (let i = 1; i < valori.length - 1; i++) {
     let Collana = valori[i][8];
     let Lingua = valori[i][9];
     let NumeroCopie = valori[i][10];
-    let Scaffale = valori[i][12];
+    let Armadio = valori[i][12];
     let Ripiano = valori[i][13];
+
+    // Salva il ripiano
+    ripiani.push(Armadio + '_' + Ripiano);
 
     // Ottieni il codice, ISBN o meno
     const codice = ISBN === 'N/D' ? '' : ISBN;
@@ -281,7 +307,7 @@ for (let i = 1; i < valori.length - 1; i++) {
 
         // Scrivi il filler con 0 a riempimento
         ISBN = filler + codice;
-        while (ISBN.length < 13)
+        while (ISBN.length < 12)
             ISBN = '0' + ISBN;
         // Aggiungi una N all'inizio del codice
         ISBN = 'N' + ISBN;
@@ -324,4 +350,23 @@ for (let i = 1; i < valori.length - 1; i++) {
     libriInseriti++;
 }
 console.log("Libri salvati:", libriInseriti);
+
+// Elimina i duplicati nei ripiani
+ripiani = [...new Set(ripiani)];
+console.log(ripiani);
+
+// Ottieni solo gli armadi
+let armadi = ripiani.map(e => /\d/.exec(e)[0]);
+armadi = [...new Set(armadi)];
+
+// Inserisci gli scaffali
+output += '\n\n-- Scaffali -----\nINSERT INTO Scaffali'
+
+
+// Inserisci le copie
+
+
+
+
+
 fs.writeFileSync("inserisci-libri.sql", output);
