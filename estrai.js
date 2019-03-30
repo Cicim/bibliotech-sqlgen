@@ -175,7 +175,7 @@ autori.unshift("AA.VV.");
 autori.unshift("N/D");
 autori.forEach((nomeCompleto, id) => {
     // Ottieni nome e cognome
-    let nome = "", cognome = "";
+    let nome = "", cognome = "", nazionalità = 0;
     let anagrafica = nomeCompleto.split(/\s+/);
 
     // Se c'è un cognome con de, raggruppa
@@ -200,8 +200,20 @@ autori.forEach((nomeCompleto, id) => {
     cognome = cognome.trim().capitalizeAll();
     nome = nome.trim().capitalize();
 
+    // Se il cognome è N/D o AA.VV.
+    // Metti nazionalità sconosciuta
+    if (cognome === 'N/D' || cognome == 'AA.VV.')
+        nazionalità = 0;
+    // Se il cognome finisce con una vocal
+    else if (cognome.match(/[aeiou.]$/))
+        // Probabilmente è italiano
+        nazionalità = 1;
+    // Se finisce con una consonante è probabile che sia ingles
+    // Il resto si sistema
+    else nazionalità = 2;
+
     // Inserisci tutto
-    output += `\t(${id}, "${nome}", "${cognome}", '2000-01-01', 0, 1)`;
+    output += `\t(${id}, "${nome}", "${cognome}", '2000-01-01', ${nazionalità}, 1)`;
     if (id < autori.length - 1) output += ',\n';
     else output += ';';
 });
@@ -212,12 +224,23 @@ console.log("Autori salvati:", autori.length);
 /**
  * Ricava i dati dei libri
  */
-for (let i = 1; i < valori.length; i++) {
+for (let i = 1; i < valori.length - 1; i++) {
     const ISBN = valori[i][0];
     const Titolo = valori[i][1];
-    const DataAggiunta = valori[i][2];
+    const AnnoPubblicazione = valori[i][2];
+    const DataAggiunta = valori[i][3];
+    const Genere = valori[i][4];
+    const Tipologia = valori[i][5];
+    const Autori = valori[i][6];
+    const Editore = valori[i][7];
+    const Collana = valori[i][8];
+    const Lingua = valori[i][9];
     const NumeroCopie = valori[i][10];
+    // const Prezzo = valori[i][11];
     const Scaffale = valori[i][12];
     const Ripiano = valori[i][13];
+
+
+    console.log(NumeroCopie, Titolo);
 }
 fs.writeFileSync("inserisci-libri.sql", output);
