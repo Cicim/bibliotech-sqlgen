@@ -128,8 +128,9 @@ output += "\n\n-- Generi -----\nINSERT INTO Generi (idGenere, Descrizione) VALUE
 // Rimuovi l'N/D
 generi.splice(generi.indexOf("n/d"), 1);
 // Inserisci l'N/D
-generi.unshift("N/D");
+generi.unshift("n/d");
 generi.forEach((genere, id) => {
+    if (genere === 'n/d') genere = 'N/D';
     output += `\t(${id}, "${genere.capitalize()}")`;
     if (id < generi.length - 1) output += ',\n';
     else output += ';';
@@ -224,23 +225,37 @@ console.log("Autori salvati:", autori.length);
 /**
  * Ricava i dati dei libri
  */
+// Inizio dell'SQL
+output += "\n\n-- Libri -----\nINSERT INTO Libri (ISBN, Titolo, Descrizione, AnnoPubblicazione,"
+output += " DataAggiunta, idGenere, idTipo, idEditore, idCollana, idLingua) VALUES\n";
+
+let libriInseriti = 0;
 for (let i = 1; i < valori.length - 1; i++) {
-    const ISBN = valori[i][0];
-    const Titolo = valori[i][1];
-    const AnnoPubblicazione = valori[i][2];
-    const DataAggiunta = valori[i][3];
-    const Genere = valori[i][4];
-    const Tipologia = valori[i][5];
-    const Autori = valori[i][6];
-    const Editore = valori[i][7];
-    const Collana = valori[i][8];
-    const Lingua = valori[i][9];
-    const NumeroCopie = valori[i][10];
-    // const Prezzo = valori[i][11];
-    const Scaffale = valori[i][12];
-    const Ripiano = valori[i][13];
+    let ISBN = valori[i][0];
+    let Titolo = valori[i][1];
+    let AnnoPubblicazione = valori[i][2];
+    let DataAggiunta = valori[i][3];
+    let Genere = valori[i][4];
+    let Tipologia = valori[i][5];
+    let Autori = valori[i][6];
+    let Editore = valori[i][7];
+    let Collana = valori[i][8];
+    let Lingua = valori[i][9];
+    let NumeroCopie = valori[i][10];
+    let Scaffale = valori[i][12];
+    let Ripiano = valori[i][13];
 
+    // Ignora i libri senza ISBN
+    // TODO Sistema l'ISBN
+    if (!ISBN.match(/^\d{13}$/)) continue;
 
-    console.log(NumeroCopie, Titolo);
+    // Capitolizza il titolo
+    Titolo = Titolo.capitalize();
+
+    // Inserisci la riga
+    output += `\t('${ISBN}', "${Titolo}")\n`
+
+    libriInseriti++;
 }
+console.log("Libri salvati:", libriInseriti);
 fs.writeFileSync("inserisci-libri.sql", output);
