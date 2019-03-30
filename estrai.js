@@ -6,6 +6,9 @@ const linee = file.split("\n");
 // Dividi ogni linea per ;
 const valori = linee.map(e => e.split(";"));
 
+// Output da scrivere nel file SQL
+let output = "";
+
 
 // Stampa la lista dei dati nella tabella
 console.log(valori[0].join("\n"));
@@ -104,12 +107,24 @@ console.log("-----------");
 
 
 /**
+ * Inserisci i dati necessari 
+ * per far funzionare tutto
+ */
+//#region 
+// Inserisci la tabella delle nazionalità
+output += '-- Nazionalità -----\nINSERT INTO Nazionalita (idNazionalita, Descrizione) VALUES\n';
+output += '\t(0, "Sconosciuta"),\n';
+output += '\t(1, "Italiana"),\n';
+output += '\t(2, "Inglese");';
+console.log("Nazionalità salvate: 3")
+//#endregion
+
+/**
  * Comincia ad inserire tutto nel file di output
  */
 //#region 
-let output = "";
 // Inserisci tutti i generi
-output += "-- Generi -----\nINSERT INTO Generi (idGenere, Descrizione) VALUES\n";
+output += "\n\n-- Generi -----\nINSERT INTO Generi (idGenere, Descrizione) VALUES\n";
 // Rimuovi l'N/D
 generi.splice(generi.indexOf("n/d"), 1);
 // Inserisci l'N/D
@@ -192,7 +207,6 @@ autori.forEach((nomeCompleto, id) => {
 });
 console.log("Autori salvati:", autori.length);
 //#endregion
-
 
 
 /**
