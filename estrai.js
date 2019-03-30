@@ -229,12 +229,18 @@ console.log("Autori salvati:", autori.length);
 output += "\n\n-- Libri -----\nINSERT INTO Libri (ISBN, Titolo, Descrizione, AnnoPubblicazione,"
 output += " DataAggiunta, idGenere, idTipo, idEditore, idCollana, idLingua) VALUES\n";
 
+// Ottieni la data odierna in formato SQL
+const data = new Date();
+const DataAggiunta = data.getFullYear()
+    + '-' + data.getMonth()
+    + '-' + data.getDate();
+
+
 let libriInseriti = 0;
 for (let i = 1; i < valori.length - 1; i++) {
     let ISBN = valori[i][0];
     let Titolo = valori[i][1];
     let AnnoPubblicazione = valori[i][2];
-    let DataAggiunta = valori[i][3];
     let Genere = valori[i][4];
     let Tipologia = valori[i][5];
     let Autori = valori[i][6];
@@ -252,8 +258,26 @@ for (let i = 1; i < valori.length - 1; i++) {
     // Capitolizza il titolo
     Titolo = Titolo.capitalize();
 
+    // Sistema l'anno di pubblicazione
+    if (AnnoPubblicazione === 'N/D') AnnoPubblicazione = 'NULL';
+
+    // Ottieni l'id del genere
+    let idGenere = generi.indexOf(Genere.toLowerCase());
+    if (idGenere < 0) idGenere = 0;
+
+    // Ottieni l'id del tipo
+    let idTipologia = tipologie.indexOf(Tipologia.toLowerCase());
+    if (idTipologia < 0) idTipologia = 0;
+
+    // Ottieni l'id dell'editore
+    let idEditore = editori.indexOf(Tipologia.toLowerCase());
+    if (idEditore < 0) idEditore = 0;
+
+
     // Inserisci la riga
-    output += `\t('${ISBN}', "${Titolo}")\n`
+    output += `\t('${ISBN}', "${Titolo}", NULL, ${AnnoPubblicazione}, `;
+    output += `'${DataAggiunta}', ${idGenere}, ${idTipologia}, ${idEditore}, `;
+    output += `),\n`;
 
     libriInseriti++;
 }
