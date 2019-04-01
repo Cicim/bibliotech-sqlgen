@@ -1,4 +1,3 @@
-const fs = require('fs');
 // Ottieni i valori estratti dal .csv
 let estratti = require('./files').estratti;
 // Importa le utilities per il lavoro con le stringhe
@@ -7,6 +6,10 @@ const { bold, cap, capAll } = require('./utils');
 const estrai = require('./estrazione').estrai(estratti);
 const sostituisci = require('./sostituisci').sostituisci(estratti);
 const ridividi = require('./estrazione').ridividi;
+// Importa tutte le librerie per esportare il file sql
+const {
+    tabella: scriviTabella,
+    update: scriviSuDisco } = require('./scriviSQL');
 
 // ANCHOR Estrai tutti i valori, uno ad uno
 console.log(bold("-- ESTRAZIONE DATI --"));
@@ -17,10 +20,6 @@ let editori = estrai("editore");
 let collane = estrai("collana");
 // Estrai gli autori
 let autori = ridividi(estrai("autore/i"));
-
-
-// Output da scrivere nel file SQL
-let output = "";
 
 // ANCHOR Sostituisci ogni valore in valori con il suo id
 console.log(bold("-- SOSTITUZIONE CON ID --"));
@@ -43,3 +42,15 @@ collane = collane.map(cap);
 console.timeEnd(" > " + bold("tutti"));
 
 // ANCHOR Inserisci nell'SQL i valori estratti
+console.log(bold("-- SCRITTURA SU FILE --"));
+scriviTabella("Generi", "idGenere, Descrizione", generi,
+    (i, val) => `${i}, '${val}'`);
+scriviTabella("Tipologie", "idTipologia, Descrizione", tipologie,
+    (i, val) => `${i}, '${val}'`);
+scriviTabella("Lingue", "idLingua, Descrizione, Abbreviazione", lingue,
+    (i, val) => `${i}, '${val}', '${val.replace('/', '').substring(0, 2).toUpperCase()}'`);
+scriviTabella("Editori", "idEditore, Descrizione", tipologie,
+    (i, val) => `${i}, '${val}'`);
+
+
+scriviSuDisco();

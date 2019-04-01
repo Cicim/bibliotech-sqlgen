@@ -3,6 +3,7 @@
  */
 // Funzione per capitalizzare una parola
 String.prototype.capitalize = function () {
+    if (this.toLowerCase() == 'n/d') return 'N/D';
     if (this.length === 0) return '';
     else if (this.length === 1) return this.toUpperCase();
     else return this[0].toUpperCase() + this.substr(1);
