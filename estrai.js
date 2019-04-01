@@ -1,7 +1,7 @@
 // Ottieni i valori estratti dal .csv
 let estratti = require('./files').estratti;
 // Importa le utilities per il lavoro con le stringhe
-const { bold, cap, capAll } = require('./utils');
+const { bold, cap, capAll, inc1 } = require('./utils');
 
 const estrai = require('./estrazione').estrai(estratti);
 const sostituisci = require('./sostituisci').sostituisci(estratti);
@@ -25,13 +25,13 @@ let autori = ridividi(estrai("autore/i"));
 
 // ANCHOR Sostituisci ogni valore in valori con il suo id
 console.log(bold("-- SOSTITUZIONE CON ID --"));
-const idGeneri = sostituisci("genere", generi);
-const idTipologie = sostituisci("tipo", tipologie);
-const idLingue = sostituisci("lingua", lingue);
-const idEditori = sostituisci("editore", editori);
-const idCollane = sostituisci("collana", collane);
+const idGeneri = inc1(sostituisci("genere", generi));
+const idTipologie = inc1(sostituisci("tipo", tipologie));
+const idLingue = inc1(sostituisci("lingua", lingue));
+const idEditori = inc1(sostituisci("editore", editori));
+const idCollane = inc1(sostituisci("collana", collane));
 // Sostituisci gli autori
-const idAutori = sostituisci("autore/i", autori, true);
+const idAutori = inc1(sostituisci("autore/i", autori, true));
 
 // ANCHOR Risistema i nomi di ogni lista
 console.log(bold("-- RISISTEMAZIONE TESTI --"));
@@ -82,5 +82,8 @@ INSERT INTO Piani (idPiano, Numero, idEdificio) VALUES
 INSERT INTO Sezioni (idSezione, Descrizione, idPiano) VALUES
     (1, "Libri del Rosselli", 1);`);
 console.log(" > Riempite tabelle fino a " + bold("Piani"))
+
+// ANCHOR Crea armadi e ripiani
+
 
 scriviSuDisco();

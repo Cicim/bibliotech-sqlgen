@@ -26,5 +26,12 @@ module.exports = {
     capAll(e) {
         return e.capitalizeAll();
     },
+    // Incrementa ogni numero in questo array e nei sottoarray di 1
+    inc1(arr) {
+        return arr.map(el => {
+            if (typeof el === 'number') return el + 1;
+            else return el.map(el => el + 1);
+        });
+    },
     SEPARA_AUTORI: /, | [eE] | & | \/ | [eE][tT]/
 }
