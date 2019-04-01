@@ -72,6 +72,11 @@ for (let i = 1; i < estratti.length; i++) {
         // Togli gli spazi inutili tra le virgole
         cella = cella.replace(/\s*,\s*/, ', ');
 
+        // Elimina eventuali errori di battitura che incontri
+        cella = cella.replace(/^itraliano$/, "italiano");
+        cella = cella.replace(/^[Ii]tal$/, "italiano");
+        cella = cella.replace(/^[Ii]talaino$/, "italiano");
+
         estratti[i][j] = cella;
     }
 

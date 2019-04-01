@@ -9,6 +9,8 @@ let output = "";
 // Comincia ad estrarre gli elementi uno ad uno
 const estrai = require('./estrazione').estrai(valori);
 
-const generi = estrai("generi");
-
+// Estrai tutti i valori, uno ad uno
+const generi = estrai("genere");
+const tipologie = estrai("tipo");
+const lingue = estrai("lingua");
 
