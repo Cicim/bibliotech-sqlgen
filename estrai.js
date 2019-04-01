@@ -6,6 +6,7 @@ const { bold, cap, capAll } = require('./utils');
 const estrai = require('./estrazione').estrai(estratti);
 const sostituisci = require('./sostituisci').sostituisci(estratti);
 const ridividi = require('./estrazione').ridividi;
+const sistemaNomi = require('./sistemaNomi').sistemaNomi;
 // Importa tutte le librerie per esportare il file sql
 const {
     tabella: scriviTabella,
@@ -39,6 +40,7 @@ tipologie = tipologie.map(cap);
 lingue = lingue.map(cap);
 editori = editori.map(capAll);
 collane = collane.map(cap);
+autori = autori.map(capAll);
 console.timeEnd(" > " + bold("tutti"));
 
 // ANCHOR Inserisci nell'SQL i valori estratti
@@ -54,6 +56,9 @@ scriviTabella("Editori", "idEditore, Nome, Descrizione", editori,
 scriviTabella("Collane", "idCollana, Nome", collane,
     (i, val) => `${i}, "${val}"`);
 scriviTabella("Autori", "idAutore, NomeAutore, CognomeAutore, DataNascita, idNazionalita, idCittaNascita", autori,
-    (i, val) => `${i}`);
+    (i, val) => {
+        const { nome, cognome } = sistemaNomi(val);
+        return `${i}, "${nome}", "${cognome}", "0000-00-00", 1, 1`;
+    });
 
 scriviSuDisco();

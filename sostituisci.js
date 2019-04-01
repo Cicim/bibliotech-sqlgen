@@ -1,4 +1,4 @@
-const { bold } = require('./utils');
+const { bold, SEPARA_AUTORI } = require('./utils');
 
 /**
  * Funzioni per estrarre tutti i valori in appositi array
@@ -25,7 +25,7 @@ module.exports = {
                 let el = estratti[i][indice];
 
                 // Se l'elemento non ha virgole al suo interno
-                if (el.indexOf(",") === -1) {
+                if (!riportaArray) {
                     // Adattalo come fatto in estrazione.js
                     el = el.toLowerCase().trim();
                     // Cercalo nella lista fornita
@@ -33,19 +33,16 @@ module.exports = {
                     // Se l'id è -1
                     if (id === -1) return errore(colonna, el);
                     // Pushalo nella lista degli id
-                    // Se devi riportare un array, riportalo come array
-                    if (riportaArray)
-                        ids.push([id]);
-                    // Altrimenti riporta solo il valore
-                    else
-                        ids.push(id);
+                    ids.push(id);
                 }
                 // Altrimenti, se è una lista di autori
-                else if (riportaArray) {
+                else {
                     // Crea una lista interna
                     let nuova = [];
                     // Esegui la stessa formattazione di estrazione.js
-                    const split = el.split(",").map(el => el.toLowerCase().trim());
+                    const split = el.split(SEPARA_AUTORI).map(el => el.toLowerCase().trim())
+                        .filter(el => el !== '');
+
                     // Aggiungi l'elemento splittato alla nuova lista
                     nuova = nuova.concat(split);
 
@@ -53,7 +50,7 @@ module.exports = {
                     for (let j = 0; j < nuova.length; j++) {
                         // Cercalo nella lista fornita
                         const id = lista.indexOf(nuova[j]);
-                        
+
                         // Se l'id è -1
                         if (id === -1) return errore(colonna, nuova[j]);
                         // Altrimenti, sostuiscilo
@@ -63,6 +60,10 @@ module.exports = {
                 }
             }
             console.timeEnd(" > " + bold(colonna));
+
+            if (ids.length !== estratti.length - 1)
+                console.log(`\x1b[31mErrore: qualche riga è stata persa\x1b[0m`)
+
             return ids;
         }
     }

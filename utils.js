@@ -25,5 +25,6 @@ module.exports = {
     },
     capAll(e) {
         return e.capitalizeAll();
-    }
+    },
+    SEPARA_AUTORI: /, | [eE] | & | \/ | [eE][tT]/
 }

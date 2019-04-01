@@ -1,4 +1,4 @@
-const { bold } = require('./utils');
+const { bold, SEPARA_AUTORI } = require('./utils');
 
 /**
  * Funzioni per estrarre tutti i valori in appositi array
@@ -48,7 +48,8 @@ module.exports = {
         // Per ogni elemento in quella vecchi
         lista.forEach(el => {
             // Splitta gli elementi
-            const split = el.split(",").map(el => el.toLowerCase().trim());
+            const split = el.split(SEPARA_AUTORI).map(el => el.toLowerCase().trim())
+                .filter(el => el !== '');
             // Aggiungi l'elemento splittato alla nuova lista
             nuova = nuova.concat(split);
         });
