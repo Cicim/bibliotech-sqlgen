@@ -38,7 +38,7 @@ for (let i = 1; i < estratti.length; i++) {
 }
 
 // ANCHOR Sistema tutto il sistemabile
-const POSSIBLE_NDS = /^([Nn]\.[Dd]\.|\\+|\/+)$/;
+const POSSIBLE_NDS = /^([Nn]\.[Dd]\.|\\+|\/+|[nN]on [pP]ervenuto)$/;
 const REAL_ND = "N/D";
 // Cambia tutti gli N.D. e gli // in N/D
 for (let i = 0; i < estratti.length; i++) {
@@ -97,17 +97,51 @@ console.log("\x1b[1mLetti\x1b[0m:", estratti.length,
     "\x1b[1mDuplicati\x1b[0m:", estratti.length - insieme.length);
 
 
-// Stampa il file in stile csv
-let output = "";
-for (let i = 0; i < insieme.length; i++) {
-    output += insieme[i] + '\n';
-}
-fs.writeFileSync("output/sistemati.csv", output);
+
 // Ridividi gli elementi unici per ; e passali
 estratti = insieme.map(el => el.split(";"));
+// Salva la lunghezza iniziale
+const inizio = estratti.length;
 
+// ANCHOR Elimina gli ISBN duplicati
+for (let i = 1; i < estratti.length; i++) {
+    // Elimina i -
+    estratti[i][0] = estratti[i][0].replace(/-/g, "");
+    // Trova l'ISBN
+    const isbn = estratti[i][0];
+
+    // Se l'ISBN è N/D o non è valido, salta
+    if (isbn.length !== 13 && !isbn.match(/\d{13}/)) continue;
+
+    // Altrimenti cerca un eventuale doppione
+    for (let j = i + 1; j < estratti.length; j++) {
+        // Se l'ISBN è uguale
+        if (isbn === estratti[j][0].replace(/-/g, "")) {
+            // Elimina il secondo
+            estratti.splice(j--, 1);
+        }
+    }
+}
+
+console.log("\x1b[1mIniziali\x1b[0m:", inizio,
+    "\x1b[1mScritti\x1b[0m:", estratti.length,
+    "\x1b[1mISBN duplicati\x1b[0m:", inizio - estratti.length);
+
+
+
+
+
+// ANCHOR Stampa il file in stile csv
+let output = "";
+for (let i = 0; i < estratti.length; i++) {
+    output += estratti[i].join(";") + '\n';
+}
+fs.writeFileSync("output/sistemati.csv", output);
 // Finito
 console.timeEnd(bold("Letto .csv"));
+
+
+
 
 // ANCHOR Esporta le linee estratte
 module.exports = { estratti }
