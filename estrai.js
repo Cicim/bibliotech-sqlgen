@@ -22,7 +22,7 @@ let autori = ridividi(estrai("autore/i"));
 // Output da scrivere nel file SQL
 let output = "";
 
-// Sostituisci ogni valore in valori con il suo id
+// ANCHOR Sostituisci ogni valore in valori con il suo id
 console.log(bold("-- SOSTITUZIONE CON ID --"));
 const idGeneri = sostituisci("genere", generi);
 const idTipologie = sostituisci("tipo", tipologie);
@@ -32,4 +32,14 @@ const idCollane = sostituisci("collana", collane);
 // Sostituisci gli autori
 const idAutori = sostituisci("autore/i", autori, true);
 
-// Risistema i nomi di ogni lista
+// ANCHOR Risistema i nomi di ogni lista
+console.log(bold("-- RISISTEMAZIONE TESTI --"));
+console.time(" > " + bold("tutti"));
+generi = generi.map(cap);
+tipologie = tipologie.map(cap);
+lingue = lingue.map(cap);
+editori = editori.map(capAll);
+collane = collane.map(cap);
+console.timeEnd(" > " + bold("tutti"));
+
+// ANCHOR Inserisci nell'SQL i valori estratti
