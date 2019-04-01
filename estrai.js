@@ -3,6 +3,9 @@ const fs = require('fs');
 // Ottieni i valori estratti dal .csv
 const valori = require('./files').estratti;
 
+// Importa le utilities per il lavoro con le stringhe
+require('./utils');
+
 // Output da scrivere nel file SQL
 let output = "";
 
@@ -78,24 +81,6 @@ for (let i = 1; i < valori.length; i++)
         lingue.push(valori[i][9].toLowerCase().trim());
 lingue = [...new Set(lingue)];
 console.log("Lingue estratte:", lingue.length);
-//#endregion
-
-/**
- * Utilities
- */
-//#region
-String.prototype.capitalize = function () {
-    if (this.length === 0) return '';
-    else if (this.length === 1) return this.toUpperCase();
-    else return this[0].toUpperCase() + this.substr(1);
-}
-String.prototype.capitalizeAll = function () {
-    let stringParts = this.split(/[^\wàèìou.'&\/]/g);
-    stringParts = stringParts.map(e => e.capitalize());
-    return stringParts.join(" ");
-
-}
-console.log("-----------");
 //#endregion
 
 
