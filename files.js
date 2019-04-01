@@ -36,7 +36,8 @@ for (let i = 1; i < estratti.length; i++) {
     }
 }
 
-const POSSIBLE_NDS = /^([Nn]\.[Dd]\.|\\\\|\/\/)$/;
+// ANCHOR Sistema tutto il sistemabile
+const POSSIBLE_NDS = /^([Nn]\.[Dd]\.|\\+|\/+)$/;
 const REAL_ND = "N/D";
 // Cambia tutti gli N.D. e gli // in N/D
 for (let i = 0; i < estratti.length; i++) {
@@ -53,18 +54,41 @@ for (let i = 0; i < estratti.length; i++) {
 for (let i = 1; i < estratti.length; i++) {
     // Per ogni cella
     for (let j = 0; j < CELL_NUMBER; j++) {
+        let cella = estratti[i][j]
         // Se la stringa esiste, elimina gli spazi agli estremi
-        if (estratti[i][j])
-            estratti[i][j] = estratti[i][j].trim();
+        if (cella) cella = estratti[i][j].trim();
         // Altrimenti creala con un N/D
-        else estratti[i][j] = REAL_ND;
+        else cella = REAL_ND;
+
+        // Sostituisci tutti i caratteri errati con le loro controparti giuste
+        cella = cella.replace("", "'");
+        cella = cella.replace("", "«");
+        cella = cella.replace("", "»");
+        cella = cella.replace("", "—");
+        cella = cella.replace("", "€");
+        // E sostituisci anche i caratteri inseriti male
+        cella = cella.replace("<<", "«");
+        cella = cella.replace(">>", "»");
+        // Togli gli spazi inutili tra le virgole
+        cella = cella.replace(/\s*,\s*/, ', ');
+
+        estratti[i][j] = cella;
     }
+
+    // Infine elimina il prezzo
+    estratti[i].splice(11, 1);
 }
+estratti[0].splice(11, 1);
+
+// Elimina le righe completamente identiche
+let insieme = [...new Set(estratti.map(el => el.join(";")))];
+
+console.log(estratti.length, insieme.length);
 
 // Stampa il file in stile csv
 let output = "";
-for (let i = 0; i < estratti.length; i++) {
-    output += estratti[i].join(";") + '\n';
+for (let i = 0; i < insieme.length; i++) {
+    output += insieme[i] + '\n';
 }
 fs.writeFileSync("output/sistemati.csv", output);
 
