@@ -18,5 +18,11 @@ module.exports = {
     // Per scrivere il testo bold
     bold(e) {
         return `\x1b[1m${e}\x1b[0m`;
+    },
+    cap(e) {
+        return e.capitalize();
+    },
+    capAll(e) {
+        return e.capitalizeAll();
     }
 }
