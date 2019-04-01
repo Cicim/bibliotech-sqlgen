@@ -69,7 +69,7 @@ scriviTabella("Ruolo_Scrittura", "idRuolo, Descrizione",
 scriviTabella("Autori", "idAutore, NomeAutore, CognomeAutore, DataNascita, idNazionalita, idCittaNascita", autori,
     (i, val) => {
         const { nome, cognome } = sistemaNomi(val);
-        return `${i}, "${nome}", "${cognome}", "0000-00-00", 1, 1`;
+        return `${i + 1}, "${nome}", "${cognome}", "0000-00-00", 1, 1`;
     });
 
 // ANCHOR Inserisci i valori costanti nell'SQL
