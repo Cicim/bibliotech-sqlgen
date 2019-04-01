@@ -8,6 +8,7 @@ const sostituisci = require('./sostituisci').sostituisci(estratti);
 const ridividi = require('./estrazione').ridividi;
 const sistemaNomi = require('./sistemaNomi').sistemaNomi;
 const generaArmadi = require('./armadi').genera;
+const generaCodice = require('./isbn').genera;
 // Importa tutte le librerie per esportare il file sql
 const {
     tabella: scriviTabella,
@@ -87,5 +88,12 @@ console.log(" > Riempite tabelle fino a " + bold("Piani"))
 // ANCHOR Crea armadi e ripiani
 console.log(bold("-- OTTIENI LISTA ARMADI E RIPIANI --"))
 const idRipiani = inc1(generaArmadi(estratti));
+
+// ANCHOR Crea i libri
+console.log(bold("-- INSERISCI LIBRI --"))
+scriviTabella("Libri", "ISBN, Titolo, Descrizione, AnnoPubblicazione, DataAggiunta, idGenere, idTipo, idEditore, idCollana, idLingua", estratti.slice(1),
+    (i, val) => {
+        return `'${generaCodice(val[0])}'`
+    });
 
 scriviSuDisco();
