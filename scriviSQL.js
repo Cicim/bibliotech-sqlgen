@@ -31,6 +31,11 @@ module.exports = {
         console.timeEnd(" > " + bold(nomeTabella));
     },
 
+    // Aggiunge del testo all'SQL
+    add(text) {
+        output += text;
+    },
+
     // Scrive su disco le modifiche effettuate
     update() {
         fs.writeFileSync(path, output);

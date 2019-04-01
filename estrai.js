@@ -10,6 +10,7 @@ const sistemaNomi = require('./sistemaNomi').sistemaNomi;
 // Importa tutte le librerie per esportare il file sql
 const {
     tabella: scriviTabella,
+    add: scriviSQL,
     update: scriviSuDisco } = require('./scriviSQL');
 
 // ANCHOR Estrai tutti i valori, uno ad uno
@@ -63,5 +64,23 @@ scriviTabella("Autori", "idAutore, NomeAutore, CognomeAutore, DataNascita, idNaz
         const { nome, cognome } = sistemaNomi(val);
         return `${i}, "${nome}", "${cognome}", "0000-00-00", 1, 1`;
     });
+
+// ANCHOR Inserisci i valori costanti nell'SQL
+scriviSQL(`\n\n-- Enti -----
+INSERT INTO Enti (idEnte, NomeEnte) VALUES
+	(1, "I.S. Rosselli Aprilia");\n
+-- Biblioteche -----
+INSERT INTO Biblioteche (idBiblioteca, Email, TelefonoFisso, Principale, ViaPzz, NumeroCivico, Citta, SitoWeb, NomeBiblioteca, EnteAppartenente) VALUES
+	(1, "ltis004008@istruzione.it", "0692063631", 1, "Via Carroceto", NULL, 173, "http://isrosselliaprilia.gov.it", "Biblioteca Rosselli", 1);\n
+-- Edifici -----
+INSERT INTO Edifici (idEdificio, Descrizione, idBiblioteca) VALUES
+	(1, "Sede Est", 1);\n
+-- Piani -----
+INSERT INTO Piani (idPiano, Numero, idEdificio) VALUES
+	(1, 1, 1);\n
+-- Sezioni -----
+INSERT INTO Sezioni (idSezione, Descrizione, idPiano) VALUES
+    (1, "Libri del Rosselli", 1);`);
+console.log(" > Riempite tabelle fino a " + bold("Piani"))
 
 scriviSuDisco();
