@@ -100,7 +100,7 @@ const dataAggiunta = '2019-04-01';
 scriviTabella("Libri", "ISBN, Titolo, Descrizione, AnnoPubblicazione, DataAggiunta, idGenere, idTipo, idEditore, idCollana, idLingua", estratti.slice(1),
     (i, val) => {
         const titolo = val[1].capitalizeAll().trim().replace('"', '\\"');
-        const anno = val[2] === 'N/D' ? 0 ? val[2];
+        const anno = val[2] === 'N/D' ? 0 : val[2];
         return `'${generaCodice(val[0])}', "${titolo}", "", ${anno}, '${dataAggiunta}', ${idGeneri[i]}, ${idTipologie[i]}, ${idEditori[i]}, ${idCollane[i]}, ${idLingue[i]}`;
     });
 // Resetta il conto per poter inserire le copie
@@ -127,7 +127,7 @@ scriviFree("Autori_Libri", "idAutore, ISBNLibro, idRuoloScrittura", estratti.sli
         
         // Per ogni autore
         for (let j = 0; j < auts.length; j++) 
-            out += `\t(${auts[j]}, '${isbn}', 1);\n`;
+            out += `\t(${auts[j]}, '${isbn}', 1),\n`;
         
         return out;
     });
