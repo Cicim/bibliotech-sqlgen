@@ -19,7 +19,7 @@ module.exports = {
         // Stampa il commento iniziale
         output += `\n\n-- ${nomeTabella} -----\n`;
         // Stampa la tabella con gli argomenti
-        output += `INSERT INTO ${nomeTabella} VALUES (${colonne})\n`;
+        output += `INSERT INTO ${nomeTabella} (${colonne}) VALUES\n`;
 
         // Inserisci ogni riga
         for (let i = 0; i < array.length; i++) 
@@ -38,7 +38,7 @@ module.exports = {
         // Stampa il commento iniziale
         output += `\n\n-- ${nomeTabella} -----\n`;
         // Stampa la tabella con gli argomenti
-        output += `INSERT INTO ${nomeTabella} VALUES (${colonne})\n`;
+        output += `INSERT INTO ${nomeTabella} (${colonne}) VALUES\n`;
 
         // Inserisci ogni riga
         for (let i = 0; i < array.length; i++) {
@@ -63,7 +63,7 @@ module.exports = {
         // Stampa il commento iniziale
         output += `\n\n-- ${nomeTabella} -----\n`;
         // Stampa la tabella con gli argomenti
-        output += `INSERT INTO ${nomeTabella} VALUES (${colonne})\n`;
+        output += `INSERT INTO ${nomeTabella} (${colonne}) VALUES\n`;
 
         // Inserisci ogni riga
         for (let i = 0; i < array.length; i++) 
