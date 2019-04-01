@@ -8,8 +8,6 @@ module.exports = {
         // Dividi nome e cognome
         let nome = "", cognome = "";
 
-        const i2 = input;
-
         // Comincia dividendo l'input per spazio
         input = input.split(" ");
         // Elimina ogni elemento vuoto
