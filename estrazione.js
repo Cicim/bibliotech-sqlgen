@@ -23,7 +23,7 @@ module.exports = {
             // Scorri tutta la lista
             for (let i = 1; i < valori.length; i++)
                 // Pusha il valore all'indice giusto nell'array
-                righe.push(valori[i][indice].toLowerCase());
+                righe.push(valori[i][indice].toLowerCase().trim());
 
             // Elimina i duplicati
             let senzaDuplicati = [...new Set(righe)];

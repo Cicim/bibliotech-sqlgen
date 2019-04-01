@@ -1,10 +1,11 @@
 const fs = require('fs');
 // Ottieni i valori estratti dal .csv
-const estratti = require('./files').estratti;
+let estratti = require('./files').estratti;
 // Importa le utilities per il lavoro con le stringhe
 const { bold } = require('./utils');
 
 const estrai = require('./estrazione').estrai(estratti);
+const sostituisci = require('./sostituisci').sostituisci(estratti);
 const ridividi = require('./estrazione').ridividi;
 
 // ANCHOR Estrai tutti i valori, uno ad uno
@@ -22,3 +23,9 @@ const autori = ridividi(estrai("autore/i"));
 let output = "";
 
 // Sostituisci ogni valore in valori con il suo id
+console.log(bold("-- SOSTITUZIONE CON ID --"));
+const idGeneri = sostituisci("genere", generi);
+const idTipologie = sostituisci("tipo", tipologie);
+const idLingue = sostituisci("lingua", lingue);
+const idEditori = sostituisci("editore", editori);
+const idCollane = sostituisci("collana", collane);
