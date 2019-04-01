@@ -49,8 +49,11 @@ scriviTabella("Tipologie", "idTipologia, Descrizione", tipologie,
     (i, val) => `${i}, '${val}'`);
 scriviTabella("Lingue", "idLingua, Descrizione, Abbreviazione", lingue,
     (i, val) => `${i}, '${val}', '${val.replace('/', '').substring(0, 2).toUpperCase()}'`);
-scriviTabella("Editori", "idEditore, Descrizione", tipologie,
-    (i, val) => `${i}, '${val}'`);
-
+scriviTabella("Editori", "idEditore, Nome, Descrizione", editori,
+    (i, val) => `${i}, "${val}", NULL`);
+scriviTabella("Collane", "idCollana, Nome", collane,
+    (i, val) => `${i}, "${val}"`);
+scriviTabella("Autori", "idAutore, NomeAutore, CognomeAutore, DataNascita, idNazionalita, idCittaNascita", autori,
+    (i, val) => `${i}`);
 
 scriviSuDisco();

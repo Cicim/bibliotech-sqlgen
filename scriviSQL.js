@@ -1,5 +1,6 @@
 // Il file system per leggere i file
 const fs = require('fs');
+const {bold} = require('./utils');
 
 /**
  * File per scrivere i vari valori sul file di output SQL
@@ -13,6 +14,8 @@ let path = "output/inserisci-libri-2.sql";
 module.exports = {
     // Stampa i valori in una tabella dato un array
     tabella(nomeTabella, colonne, array, inserimento) {
+        // Scriviti il tempo
+        console.time(" > " + bold(nomeTabella));
         // Stampa il commento iniziale
         output += `\n\n-- ${nomeTabella} -----\n`;
         // Stampa la tabella con gli argomenti
@@ -24,6 +27,8 @@ module.exports = {
         
         // Cambia l'ultima , in ;
         output = output.replace(/,\n$/, ';');
+        
+        console.timeEnd(" > " + bold(nomeTabella));
     },
 
     // Scrive su disco le modifiche effettuate
