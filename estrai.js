@@ -1,10 +1,7 @@
 const fs = require('fs');
-const file = fs.readFileSync("Biblioteca2.csv", "latin1");
 
-// Dividi il file per linea
-const linee = file.split("\n");
-// Dividi ogni linea per ;
-const valori = linee.map(e => e.split(";"));
+// Ottieni i valori estratti dal .csv
+const valori = require('./files').estratti;
 
 // Output da scrivere nel file SQL
 let output = "";
@@ -431,4 +428,4 @@ output = output.replace(/,\n$/, ';');
 
 
 
-fs.writeFileSync("inserisci-libri2.sql", output);
+fs.writeFileSync("output/inserisci-libri2.sql", output);
