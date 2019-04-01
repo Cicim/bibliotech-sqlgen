@@ -20,9 +20,10 @@ linee = linee.map(l => l.replace(/;\r$/, ''));
 let estratti = linee.map(e => e.split(";"));
 // Elimina qualsiasi elemento non abbia un titolo
 estratti = estratti.filter(el => el[0] !== '');
+// Ottieni il numero di campi da estrarre
+const CELL_NUMBER = estratti[0].length;
 
 // Assicurati che tutte le righe abbiano la stessa lunghezza
-const CELL_NUMBER = estratti[0].length;
 // Scorri tutte le righe
 for (let i = 1; i < estratti.length; i++) {
     // Se una non contiene CELL_NUMBER elementi
@@ -35,7 +36,7 @@ for (let i = 1; i < estratti.length; i++) {
     }
 }
 
-const POSSIBLE_NDS = /[Nn]\.[Dd]\.|\\\\|\/\//;
+const POSSIBLE_NDS = /^([Nn]\.[Dd]\.|\\\\|\/\/)$/;
 const REAL_ND = "N/D";
 // Cambia tutti gli N.D. e gli // in N/D
 for (let i = 0; i < estratti.length; i++) {
@@ -47,6 +48,25 @@ for (let i = 0; i < estratti.length; i++) {
             estratti[i][j] = REAL_ND;
     }
 }
+
+// Per ogni elemento
+for (let i = 1; i < estratti.length; i++) {
+    // Per ogni cella
+    for (let j = 0; j < CELL_NUMBER; j++) {
+        // Se la stringa esiste, elimina gli spazi agli estremi
+        if (estratti[i][j])
+            estratti[i][j] = estratti[i][j].trim();
+        // Altrimenti creala con un N/D
+        else estratti[i][j] = REAL_ND;
+    }
+}
+
+// Stampa il file in stile csv
+let output = "";
+for (let i = 0; i < estratti.length; i++) {
+    output += estratti[i].join(";") + '\n';
+}
+fs.writeFileSync("output/sistemati.csv", output);
 
 // Finito
 console.timeEnd("Letto .csv");
