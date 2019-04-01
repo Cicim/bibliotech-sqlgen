@@ -101,7 +101,7 @@ scriviTabella("Libri", "ISBN, Titolo, Descrizione, AnnoPubblicazione, DataAggiun
     (i, val) => {
         const titolo = val[1].capitalizeAll().trim().replace('"', '\\"');
         const anno = val[2];
-        return `'${generaCodice(val[0])}', "${titolo}", ${anno}, '${dataAggiunta}', ${idGeneri[i]}, ${idTipologie[i]}, ${idEditori[i]}, ${idCollane[i]}, ${idLingue[i]}`;
+        return `'${generaCodice(val[0])}', "${titolo}", "", ${anno}, '${dataAggiunta}', ${idGeneri[i]}, ${idTipologie[i]}, ${idEditori[i]}, ${idCollane[i]}, ${idLingue[i]}`;
     });
 // Resetta il conto per poter inserire le copie
 require('./isbn').resetta();
