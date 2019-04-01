@@ -5,7 +5,7 @@ const fs = require('fs');
  * Questo è il codice per leggere un file e sistemare l'input prima di
  * cominiciare ad estrarre file
  */
-console.time("Letto .csv");
+console.time("\x1b[1mLetto .csv\x1b[0m in");
 // ANCHOR Leggi il file della biblioteca
 const file = fs.readFileSync("input/Biblioteca2.csv", "latin1");
 
@@ -83,7 +83,11 @@ estratti[0].splice(11, 1);
 // Elimina le righe completamente identiche
 let insieme = [...new Set(estratti.map(el => el.join(";")))];
 
-console.log(estratti.length, insieme.length);
+// Stampa il numero di elementi estratti
+console.log("\x1b[1mLetti\x1b[0m:", estratti.length,
+    "\x1b[1mScritti\x1b[0m:", insieme.length,
+    "\x1b[1mDuplicati\x1b[0m:", estratti.length - insieme.length);
+
 
 // Stampa il file in stile csv
 let output = "";
@@ -91,9 +95,11 @@ for (let i = 0; i < insieme.length; i++) {
     output += insieme[i] + '\n';
 }
 fs.writeFileSync("output/sistemati.csv", output);
+// Ridividi gli elementi unici per ; e passali
+estratti = insieme.map(el => el.split(";"));
 
 // Finito
-console.timeEnd("Letto .csv");
+console.timeEnd("\x1b[1mLetto .csv\x1b[0m in");
 
 // ANCHOR Esporta le linee estratte
 module.exports = { estratti }
