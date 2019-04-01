@@ -1,13 +1,14 @@
 const fs = require('fs');
+// Importa le utilities per il lavoro con le stringhe
+require('./utils');
 
 // Ottieni i valori estratti dal .csv
 const valori = require('./files').estratti;
 
-// Importa le utilities per il lavoro con le stringhe
-require('./utils');
-
 // Output da scrivere nel file SQL
 let output = "";
+
+return;
 
 /**
  * Individuazione delle tabelle
