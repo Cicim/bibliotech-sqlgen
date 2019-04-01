@@ -1,5 +1,5 @@
 const fs = require('fs');
-const file = fs.readFileSync("Biblioteca.csv", "latin1");
+const file = fs.readFileSync("Biblioteca2.csv", "latin1");
 
 // Dividi il file per linea
 const linee = file.split("\n");
@@ -244,6 +244,7 @@ output += '\t(1, "ltis004008@istruzione.it", "0692063631", 1, "Via Carroceto", N
 // Inserisci gli edifici
 output += '\n\n-- Edifici -----\nINSERT INTO Edifici (idEdificio, Descrizione, idBiblioteca) VALUES\n';
 output += '\t(1, "Sede Est", 1);';
+console.log("Enti, Biblioteche ed Edifici salvati");
 
 // Inserisci i piani
 output += '\n\n-- Piani -----\nINSERT INTO Piani (idPiano, Numero, idEdificio) VALUES\n';
@@ -252,6 +253,8 @@ output += '\t(1, 1, 1);';
 // Inserisci una sezione
 output += '\n\n-- Sezioni -----\nINSERT INTO Sezioni (idSezione, Descrizione, idPiano) VALUES\n';
 output += '\t(1, "Libri del Rosselli", 1);'
+
+console.log("Piani e Sezioni salvati");
 
 
 /**
@@ -287,12 +290,12 @@ for (let i = 1; i < valori.length - 1; i++) {
     let Titolo = valori[i][1];
     let AnnoPubblicazione = valori[i][2];
     let Genere = valori[i][4];
+    console.log(Genere);
     let Tipologia = valori[i][5];
     let Autori = valori[i][6];
     let Editore = valori[i][7];
     let Collana = valori[i][8];
     let Lingua = valori[i][9];
-    let NumeroCopie = valori[i][10];
     let Armadio = valori[i][12];
     let Ripiano = valori[i][13];
 
@@ -318,6 +321,11 @@ for (let i = 1; i < valori.length - 1; i++) {
             ISBN = '0' + ISBN;
         // Aggiungi una N all'inizio del codice
         ISBN = 'N' + ISBN;
+
+        if (ISBN.length === 14)
+            ISBN = ISBN[0] + ISBN.substr(2);
+        if (ISBN.length === 15)
+            ISBN = ISBN[0] + ISBN.substr(3);
     }
     // Aggiungi il codice alla lista di codici
     codici.push(ISBN);
@@ -365,7 +373,6 @@ output = output.replace(/,\n$/, ';');
 
 // Elimina i duplicati nei ripiani
 ripiani = [...new Set(ripiani)];
-console.log(ripiani);
 
 // Ottieni solo gli armadi
 let armadi = ripiani.map(e => /\d/.exec(e)[0]);
@@ -392,9 +399,36 @@ ripiani.forEach((ripiano, id) => {
 });
 console.log("Ripiani salvati:", ripiani.length);
 
+// Inserisci le copie
+output += '\n\n-- Copie -----\nINSERT INTO Copie (idCopia, ISBN, Prestato, idRipiano) VALUES\n';
+// Per ogni libro
+let copieInserite = 0;
+for (let i = 1; i < valori.length - 1; i++) {
+    // Ottieni il codice
+    let Codice = codici[i];
+    let NumeroCopie = valori[i][10];
+    let Armadio = valori[i][12];
+    let Ripiano = valori[i][13];
+
+    // Ottieni l'indice del ripiano
+    let idRipiano = ripiani.indexOf(Armadio + '_' + Ripiano) + 1;
+
+    // Per ogni copia
+    for (let j = 0; j < NumeroCopie; j++) {
+        // Per ogni copia
+        copieInserite++;
+        output += `\t(${copieInserite}, '${Codice}', 0, ${idRipiano}),\n`;
+    }
+}
+console.log("Copie salvate:", copieInserite);
+
+// Cambia l'ultima , in ;
+output = output.replace(/,\n$/, ';');
 
 
 
 
 
-fs.writeFileSync("inserisci-libri.sql", output);
+
+
+fs.writeFileSync("inserisci-libri2.sql", output);
