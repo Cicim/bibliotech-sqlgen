@@ -30,6 +30,31 @@ module.exports = {
         
         console.timeEnd(" > " + bold(nomeTabella));
     },
+    // Stampa i valori in una tabella dato un array e ripete n volte
+    // ogni inserimento a seconda di quanto riportato dalla funzione
+    tabellaMul(nomeTabella, colonne, array, inserimento) {
+        // Scriviti il tempo
+        console.time(" > " + bold(nomeTabella));
+        // Stampa il commento iniziale
+        output += `\n\n-- ${nomeTabella} -----\n`;
+        // Stampa la tabella con gli argomenti
+        output += `INSERT INTO ${nomeTabella} VALUES (${colonne})\n`;
+
+        // Inserisci ogni riga
+        for (let i = 0; i < array.length; i++) {
+            // Ottieni il risultato della funzione inserimento
+            const ins = inserimento(i, array[i], array);
+
+            for (let j = 0; j < ins.copies; j++)
+                output += `\t(${ins.values}),\n`;
+
+        }
+        
+        // Cambia l'ultima , in ;
+        output = output.replace(/,\n$/, ';');
+        
+        console.timeEnd(" > " + bold(nomeTabella));
+    },
 
     // Aggiunge del testo all'SQL
     add(text) {

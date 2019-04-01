@@ -12,6 +12,7 @@ const generaCodice = require('./isbn').genera;
 // Importa tutte le librerie per esportare il file sql
 const {
     tabella: scriviTabella,
+    tabellaMul: scriviRipeti,
     add: scriviSQL,
     update: scriviSuDisco } = require('./scriviSQL');
 
@@ -90,10 +91,27 @@ console.log(bold("-- OTTIENI LISTA ARMADI E RIPIANI --"))
 const idRipiani = inc1(generaArmadi(estratti));
 
 // ANCHOR Crea i libri
-console.log(bold("-- INSERISCI LIBRI --"))
+console.log(bold("-- INSERISCI LIBRI --"));
+const dataAggiunta = '2019-04-01';
 scriviTabella("Libri", "ISBN, Titolo, Descrizione, AnnoPubblicazione, DataAggiunta, idGenere, idTipo, idEditore, idCollana, idLingua", estratti.slice(1),
     (i, val) => {
-        return `'${generaCodice(val[0])}'`
+        const titolo = val[1].capitalizeAll().trim().replace('"', '\\"');
+        const anno = val[2];
+        return `'${generaCodice(val[0])}', "${titolo}", ${anno}, '${dataAggiunta}', ${idGeneri[i]}, ${idTipologie[i]}, ${idEditori[i]}, ${idCollane[i]}, ${idLingue[i]}`;
+    });
+// Resetta il conto per poter inserire le copie
+require('./isbn').resetta();
+scriviRipeti("Copie", "Prestato, ISBN, idRipiano", estratti.slice(1),
+    (i, val) => {
+        return {
+            values: `0, '${generaCodice(val[0])}', ${idRipiani[i]}`,
+            // Riporta il numero delle copie
+            copies: val[10]
+        }
     });
 
+// ANCHOR Inserisci in Autori_has_Libri
+
+console.time(bold("Scritto .csv"));
 scriviSuDisco();
+console.timeEnd(bold("Scritto .csv"));

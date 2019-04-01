@@ -10,10 +10,11 @@ module.exports = {
         let codice = (++conto).toString();
 
         // Finché il codice non è lungo 12, prepend uno 0
-        while (codice.length < 12) 
+        while (codice.length < 12)
             codice = '0' + codice;
 
         // Infine riporta N + codice
         return "N" + codice;
-    }
+    },
+    resetta() { conto = 0 }
 }
