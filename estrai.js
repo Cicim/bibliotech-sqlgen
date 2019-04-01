@@ -29,3 +29,5 @@ const idTipologie = sostituisci("tipo", tipologie);
 const idLingue = sostituisci("lingua", lingue);
 const idEditori = sostituisci("editore", editori);
 const idCollane = sostituisci("collana", collane);
+// Sostituisci gli autori
+const idAutori = sostituisci("autore/i", autori, true);

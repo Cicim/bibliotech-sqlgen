@@ -48,7 +48,7 @@ module.exports = {
         // Per ogni elemento in quella vecchi
         lista.forEach(el => {
             // Splitta gli elementi
-            const split = el.split(",").map(el => el.trim());
+            const split = el.split(",").map(el => el.toLowerCase().trim());
             // Aggiungi l'elemento splittato alla nuova lista
             nuova = nuova.concat(split);
         });
