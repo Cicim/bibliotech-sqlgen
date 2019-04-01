@@ -13,6 +13,7 @@ const generaCodice = require('./isbn').genera;
 const {
     tabella: scriviTabella,
     tabellaMul: scriviRipeti,
+    tabellaFree: scriviFree,
     add: scriviSQL,
     update: scriviSuDisco } = require('./scriviSQL');
 
@@ -62,6 +63,9 @@ scriviTabella("Collane", "idCollana, Nome", collane,
 scriviTabella("Nazionalita", "idNazionalita, Descrizione",
     ["N/D", "italiana", "inglese", "polacca"],
     (i, val) => `${i + 1}, "${val}"`);
+scriviTabella("Ruolo_Scrittura", "idRuolo, Descrizione",
+    ["scrittore", "traduttore", "collaboratore"],
+    (i, val) => `${i + 1}, "${val}"`);
 scriviTabella("Autori", "idAutore, NomeAutore, CognomeAutore, DataNascita, idNazionalita, idCittaNascita", autori,
     (i, val) => {
         const { nome, cognome } = sistemaNomi(val);
@@ -110,7 +114,23 @@ scriviRipeti("Copie", "Prestato, ISBN, idRipiano", estratti.slice(1),
         }
     });
 
-// ANCHOR Inserisci in Autori_has_Libri
+// ANCHOR Inserisci in Autori_Libri
+console.log(bold("-- INSERISCI AUTORI PER I LIBRI --"));
+// Resetta il conto per poter inserire le copie
+require('./isbn').resetta();
+scriviFree("Autori_Libri", "idAutore, ISBNLibro, idRuoloScrittura", estratti.slice(1),
+    (i, val) => {
+        const auts = idAutori[i];
+        // Ottieni l'ISBN del libro
+        const isbn = generaCodice(val[0]);
+        let out = "";
+        
+        // Per ogni autore
+        for (let j = 0; j < auts.length; j++) 
+            out += `\t(${auts[j]}, '${isbn}', 1);\n`;
+        
+        return out;
+    });
 
 console.time(bold("Scritto .csv"));
 scriviSuDisco();

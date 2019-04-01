@@ -56,6 +56,25 @@ module.exports = {
         console.timeEnd(" > " + bold(nomeTabella));
     },
 
+    // Ti lascia inserire le celle a mano
+    tabellaFree(nomeTabella, colonne, array, inserimento) {
+        // Scriviti il tempo
+        console.time(" > " + bold(nomeTabella));
+        // Stampa il commento iniziale
+        output += `\n\n-- ${nomeTabella} -----\n`;
+        // Stampa la tabella con gli argomenti
+        output += `INSERT INTO ${nomeTabella} VALUES (${colonne})\n`;
+
+        // Inserisci ogni riga
+        for (let i = 0; i < array.length; i++) 
+            // Ottieni il risultato della funzione inserimento
+            output += inserimento(i, array[i], array);        
+        // Cambia l'ultima , in ;
+        output = output.replace(/,\n$/, ';');
+        
+        console.timeEnd(" > " + bold(nomeTabella));
+    },
+
     // Aggiunge del testo all'SQL
     add(text) {
         output += text;
