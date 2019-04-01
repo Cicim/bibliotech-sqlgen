@@ -37,7 +37,23 @@ module.exports = {
             return senzaDuplicati;
         }
     },
+    // Funzione per dividere gli elementi (autori) che vanno estratti
+    // due volte, perché divisi nelle celle con le ,
+    ridividi(lista) {
+        // Crea una nuova lista
+        let nuova = [];
 
+        // Per ogni elemento in quella vecchi
+        lista.forEach(el => {
+            // Splitta gli elementi
+            const split = el.split(",").map(el => el.trim());
+            // Aggiungi l'elemento splittato alla nuova lista
+            nuova = nuova.concat(split);
+        });
+
+        // Riporta la nuova lista senza duplicati
+        return [...new Set(nuova)];
+    }
 }
 
 // Funzione da chiamare in caso di errore
