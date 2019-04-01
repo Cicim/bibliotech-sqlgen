@@ -2,12 +2,13 @@ const fs = require('fs');
 // Ottieni i valori estratti dal .csv
 const estratti = require('./files').estratti;
 // Importa le utilities per il lavoro con le stringhe
-require('./utils');
+const { bold } = require('./utils');
 
 const estrai = require('./estrazione').estrai(estratti);
 const ridividi = require('./estrazione').ridividi;
 
 // ANCHOR Estrai tutti i valori, uno ad uno
+console.log(bold("-- ESTRAZIONE DATI --"));
 const generi = estrai("genere");
 const tipologie = estrai("tipo");
 const lingue = estrai("lingua");

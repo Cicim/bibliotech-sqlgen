@@ -13,3 +13,10 @@ String.prototype.capitalizeAll = function () {
     stringParts = stringParts.map(e => e.capitalize());
     return stringParts.join(" ");
 }
+
+module.exports = {
+    // Per scrivere il testo bold
+    bold(e) {
+        return `\x1b[1m${e}\x1b[0m`;
+    }
+}

@@ -1,11 +1,12 @@
 // Importa la libreria file system
 const fs = require('fs');
+const { bold } = require('./utils');
 
 /**
  * Questo è il codice per leggere un file e sistemare l'input prima di
  * cominiciare ad estrarre file
  */
-console.time("\x1b[1mLetto .csv\x1b[0m in");
+console.time(bold("Letto .csv"));
 // ANCHOR Leggi il file della biblioteca
 const file = fs.readFileSync("input/Biblioteca2.csv", "latin1");
 
@@ -104,7 +105,7 @@ fs.writeFileSync("output/sistemati.csv", output);
 estratti = insieme.map(el => el.split(";"));
 
 // Finito
-console.timeEnd("\x1b[1mLetto .csv\x1b[0m in");
+console.timeEnd(bold("Letto .csv"));
 
 // ANCHOR Esporta le linee estratte
 module.exports = { estratti }

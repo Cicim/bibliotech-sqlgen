@@ -1,3 +1,5 @@
+const { bold } = require('./utils');
+
 /**
  * Funzioni per estrarre tutti i valori in appositi array
  */
@@ -14,15 +16,15 @@ module.exports = {
             // Se l'indice riporta -1
             if (indice === -1) return errore(colonna);
 
-            console.time(`Estrazione \x1b[1m${colonna}\x1b[0m`);
+            console.time(" > " + bold(colonna));
             // Crea una lista per contenere tutti i valori
             const righe = [];
 
             // Scorri tutta la lista
-            for (let i = 1; i < valori.length; i++) 
+            for (let i = 1; i < valori.length; i++)
                 // Pusha il valore all'indice giusto nell'array
                 righe.push(valori[i][indice].toLowerCase());
-            
+
             // Elimina i duplicati
             let senzaDuplicati = [...new Set(righe)];
 
@@ -31,7 +33,7 @@ module.exports = {
             // Non rimetterlo se non lo hai trovato prima
             if (res) senzaDuplicati.unshift("n/d");
 
-            console.timeEnd(`Estrazione \x1b[1m${colonna}\x1b[0m`);
+            console.timeEnd(" > " + bold(colonna));
 
             // Riporta l'array senza duplicati
             return senzaDuplicati;
